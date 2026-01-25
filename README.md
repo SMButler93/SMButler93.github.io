@@ -1,5 +1,3 @@
-# SMButler93.github.io
-
 <h1>Scott Butler</h1>
 <h3>Software Developer</h3>
 <br>
