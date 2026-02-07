@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     let z = 10;
     let dragData = null;
+    const originalContent = {};
 
     const desktop = document.getElementById('desktop');
     const icons = document.querySelectorAll('.icon');
@@ -47,16 +48,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // -------------------------
-    // Open/close windows
+    // Open/close windows with editable notepad
     // -------------------------
     window.openWin = id => {
         const w = document.getElementById(id);
         w.style.display = 'block';
         w.style.zIndex = ++z;
+
+        // Track original content for unsaved changes
+        const notepad = w.querySelector('.notepad');
+        if (notepad && !(id in originalContent)) {
+            originalContent[id] = notepad.innerText;
+        }
     };
 
     window.closeWin = id => {
-        document.getElementById(id).style.display = 'none';
+        const w = document.getElementById(id);
+        const notepad = w.querySelector('.notepad');
+
+        if (notepad && originalContent[id] && notepad.innerText !== originalContent[id]) {
+            const filename = w.querySelector('.titlebar').innerText.replace('X','').trim();
+            const save = confirm(`Save changes to ${filename}?`);
+            if (save) {
+                originalContent[id] = notepad.innerText;
+            } else {
+                notepad.innerText = originalContent[id];
+            }
+        }
+
+        w.style.display = 'none';
     };
 
     // -------------------------
@@ -71,15 +91,21 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleStart();
     };
 
-    desktop.addEventListener('click', () => {
-        startMenu.style.display = 'none';
+    desktop.addEventListener('click', e => {
+        // Only collapse start menu if clicking on desktop, not windows
+        if (!e.target.closest('.window')) {
+            startMenu.style.display = 'none';
+        }
     });
 
     // -------------------------
     // Clock
     // -------------------------
-    setInterval(() => {
+    function updateClock() {
         const d = new Date();
-        document.getElementById('clock').innerText = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    }, 1000);
+        document.getElementById('clock').innerText =
+            d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
 });
