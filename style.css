@@ -16,9 +16,11 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
 .controls span{display:inline-block;width:16px;height:16px;background:#c0c0c0;border:1px solid #404040;color:#000;text-align:center;line-height:14px;font-weight:bold;cursor:pointer;margin-left:2px}
 .window-body{background:#fff;padding:8px;font-size:12px;height:260px;overflow:auto}
 .notepad{font-family:Courier New,monospace;white-space:pre-wrap}
-#icon-about{top:20px;left:20px}
-#icon-skills{top:100px;left:20px}
-#icon-projects{top:180px;left:20px}
-#icon-exp{top:260px;left:20px}
-#icon-recycle{bottom:60px;right:20px}
-#icon-mycomp{top:20px;left:120px}
+
+/* Positioning icons */
+#icon-about { top: 20px; left: 20px; }
+#icon-skills { top: 100px; left: 20px; }
+#icon-projects { top: 180px; left: 20px; }
+#icon-exp { top: 260px; left: 20px; }
+#icon-recycle { bottom: 60px; right: 20px; }
+#icon-mycomp { top: 20px; left: 120px; }
