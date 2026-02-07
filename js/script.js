@@ -1,14 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     let z = 10;
     let dragData = null;
-    const originalContent = {};
     const desktop = document.getElementById('desktop');
     const icons = document.querySelectorAll('.icon');
     const startMenu = document.getElementById('startMenu');
     const taskbarWindows = document.getElementById('taskbar-windows');
 
-    // ------------------ ICON LAYOUT ------------------
+    // ------------------ IN-MEMORY FILE SYSTEM ------------------
+    const fileSystem = {
+        'README.TXT': document.getElementById('readmeContent').innerText,
+        'My Computer Info.TXT': 'System: ScottOS 95\nCPU: 1.0 GHz JS Processor\nMemory: 256 MB JS RAM'
+    };
+
     const ICON_WIDTH = 72, ICON_HEIGHT = 72, ICON_PADDING = 16;
+
     function layoutIcons() {
         let x = ICON_PADDING, y = ICON_PADDING;
         const maxHeight = desktop.offsetHeight;
@@ -49,18 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ------------------ START MENU ------------------
-    window.toggleStart = () => {
-        startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
-    };
-    desktop.addEventListener('click', e => {
-        if (!e.target.closest('.window')) startMenu.style.display = 'none';
-    });
+    window.toggleStart = () => startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
+    desktop.addEventListener('click', e => { if(!e.target.closest('.window')) startMenu.style.display='none'; });
 
     // ------------------ CLOCK ------------------
     function updateClock() {
         const d = new Date();
         document.getElementById('clock').innerText =
-            d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            d.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
     }
     setInterval(updateClock, 1000);
     updateClock();
@@ -69,33 +70,46 @@ document.addEventListener('DOMContentLoaded', () => {
     function createDialog(title, message, buttons = [{text:'OK', callback:null}]) {
         const dialog = document.createElement('div');
         dialog.className = 'window dialog';
-        dialog.style.top = '100px';
-        dialog.style.left = '100px';
-        dialog.style.width = '300px';
-        dialog.style.height = '150px';
+        dialog.style.top='100px';
+        dialog.style.left='100px';
+        dialog.style.width='300px';
+        dialog.style.height='150px';
         dialog.innerHTML = `
-            <div class="titlebar"><div class="title">${title}</div>
-            <div class="controls"><span onclick="this.closest('.dialog').remove()">X</span></div></div>
+            <div class="titlebar">
+                <div class="title">${title}</div>
+                <div class="controls"><span onclick="this.closest('.dialog').remove()">X</span></div>
+            </div>
             <div class="window-body" style="padding:8px;">${message}</div>
             <div style="display:flex; justify-content:flex-end; gap:4px; padding:4px;">
                 ${buttons.map((b,i)=>`<button id="dlg-btn-${i}">${b.text}</button>`).join('')}
             </div>`;
         desktop.appendChild(dialog);
         dialog.style.zIndex = ++z;
-        buttons.forEach((b,i)=>document.getElementById(`dlg-btn-${i}`).onclick = ()=>{
+        buttons.forEach((b,i)=>document.getElementById(`dlg-btn-${i}`).onclick = () => {
             if(b.callback) b.callback();
             dialog.remove();
         });
     }
 
     // ------------------ TEXT EDITOR ------------------
-    window.openTextEditor = (filename, content) => {
+    const openWindows = {}; // maps windowId -> filename
+
+    window.openTextEditor = (filename, content=null) => {
+        if (!filename.endsWith('.TXT')) {
+            // Non-text files (e.g. My Computer)
+            if (filename==='My Computer Info.TXT') openSystemInfoWindow();
+            return;
+        }
+
         const winId = `win-${Date.now()}`;
         const win = document.createElement('div');
         win.classList.add('window');
         win.id = winId;
-        win.style.top = '50px';
-        win.style.left = '50px';
+        win.style.top='50px';
+        win.style.left='50px';
+        const fileContent = content ?? (fileSystem[filename] ?? '');
+        openWindows[winId] = filename;
+
         win.innerHTML = `
             <div class="titlebar">
                 <div class="title">${filename}</div>
@@ -137,46 +151,81 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
             </div>
-            <div class="window-body notepad" contenteditable="true">${content}</div>
+            <div class="window-body notepad" contenteditable="true">${fileContent}</div>
         `;
         desktop.appendChild(win);
         makeWindowDraggable(win);
-        win.style.display = 'block';
-        win.style.zIndex = ++z;
-        originalContent[winId] = content;
+        win.style.display='block';
+        win.style.zIndex=++z;
 
-        // Taskbar button
-        const taskBtn = document.createElement('div');
-        taskBtn.id = `task-${winId}`;
-        taskBtn.innerText = filename;
-        taskBtn.onclick = () => {
-            win.style.display = 'block';
-            win.style.zIndex = ++z;
+        // Taskbar
+        const taskBtn=document.createElement('div');
+        taskBtn.id=`task-${winId}`;
+        taskBtn.innerText=filename;
+        taskBtn.onclick=()=>{
+            win.style.display='block';
+            win.style.zIndex=++z;
         };
         taskbarWindows.appendChild(taskBtn);
 
         // Menu hover
-        win.querySelectorAll('.menu').forEach(menu => {
-            menu.addEventListener('mouseenter', ()=>menu.querySelector('.dropdown').style.display='block');
-            menu.addEventListener('mouseleave', ()=>menu.querySelector('.dropdown').style.display='none');
+        win.querySelectorAll('.menu').forEach(menu=>{
+            menu.addEventListener('mouseenter',()=>menu.querySelector('.dropdown').style.display='block');
+            menu.addEventListener('mouseleave',()=>menu.querySelector('.dropdown').style.display='none');
         });
     };
 
-    function makeWindowDraggable(win) {
-        const titlebar = win.querySelector('.titlebar');
-        titlebar.addEventListener('mousedown', e => startDrag(win, e.clientX - win.offsetLeft, e.clientY - win.offsetTop));
+    function openSystemInfoWindow() {
+        const winId = `win-${Date.now()}`;
+        const win = document.createElement('div');
+        win.classList.add('window');
+        win.id=winId;
+        win.style.top='50px';
+        win.style.left='50px';
+        win.innerHTML=`
+            <div class="titlebar">
+                <div class="title">My Computer</div>
+                <div class="controls">
+                    <span onclick="closeWindow('${winId}')">X</span>
+                </div>
+            </div>
+            <div class="window-body">
+                <strong>System Information:</strong><br>
+                CPU: 1 GHz JS CPU<br>
+                RAM: 256 MB<br>
+                OS: ScottOS 95<br>
+                User: Scott
+            </div>
+        `;
+        desktop.appendChild(win);
+        makeWindowDraggable(win);
+        win.style.display='block';
+        win.style.zIndex=++z;
+
+        const taskBtn=document.createElement('div');
+        taskBtn.id=`task-${winId}`;
+        taskBtn.innerText='My Computer';
+        taskBtn.onclick=()=>{win.style.display='block';win.style.zIndex=++z};
+        taskbarWindows.appendChild(taskBtn);
     }
 
-    window.minimizeWindow = id => document.getElementById(id).style.display='none';
-    window.maximizeWindow = id => {
-        const win = document.getElementById(id);
+    function makeWindowDraggable(win){
+        const titlebar=win.querySelector('.titlebar');
+        titlebar.addEventListener('mousedown',e=>{
+            startDrag(win, e.clientX-win.offsetLeft, e.clientY-win.offsetTop);
+        });
+    }
+
+    window.minimizeWindow=id=>document.getElementById(id).style.display='none';
+    window.maximizeWindow=id=>{
+        const win=document.getElementById(id);
         if(win.dataset.maximized==='true'){
             win.style.width=win.dataset.prevWidth;
             win.style.height=win.dataset.prevHeight;
             win.style.top=win.dataset.prevTop;
             win.style.left=win.dataset.prevLeft;
             win.dataset.maximized='false';
-        } else {
+        }else{
             win.dataset.prevWidth=win.style.width;
             win.dataset.prevHeight=win.style.height;
             win.dataset.prevTop=win.style.top;
@@ -189,14 +238,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    window.closeWindow = id => {
+    window.closeWindow=id=>{
         const win=document.getElementById(id);
+        const filename=openWindows[id];
         const notepad=win.querySelector('.notepad');
-        if(notepad && originalContent[id] && notepad.innerText!==originalContent[id]){
-            createDialog('Notepad', `Save changes to ${win.querySelector('.title').innerText}?`, [
-                {text:'Yes', callback:()=>originalContent[id]=notepad.innerText},
-                {text:'No', callback:()=>notepad.innerText=originalContent[id]},
-                {text:'Cancel', callback:null}
+        if(filename && notepad && fileSystem[filename]!==notepad.innerText){
+            createDialog('Notepad',`Save changes to ${filename}?`,[
+                {text:'Yes',callback:()=>{fileSystem[filename]=notepad.innerText; win.remove(); document.getElementById(`task-${id}`).remove();}},
+                {text:'No',callback:()=>{win.remove(); document.getElementById(`task-${id}`).remove();}},
+                {text:'Cancel',callback:null}
             ]);
             return;
         }
@@ -206,21 +256,19 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ------------------ TEXT EDITOR HELPERS ------------------
-    window.newFile = id => {
+    window.newFile=id=>{
         const win=document.getElementById(id);
         const notepad=win.querySelector('.notepad');
         notepad.innerText='';
-        originalContent[id]='';
     };
-
-    window.saveFile = id => {
+    window.saveFile=id=>{
         const win=document.getElementById(id);
+        const filename=openWindows[id];
         const notepad=win.querySelector('.notepad');
-        originalContent[id]=notepad.innerText;
-        createDialog('Notepad', 'File saved successfully.');
+        if(filename){
+            fileSystem[filename]=notepad.innerText;
+            createDialog('Notepad','File saved successfully.');
+        }
     };
-
-    window.setFontSize = (id, size) => {
-        document.getElementById(id).querySelector('.notepad').style.fontSize=size+'px';
-    };
+    window.setFontSize=(id,size)=>document.getElementById(id).querySelector('.notepad').style.fontSize=size+'px';
 });
