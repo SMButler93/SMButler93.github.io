@@ -30,6 +30,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+const windows = document.querySelectorAll('.window');
+windows.forEach(win => {
+    const titlebar = win.querySelector('.titlebar');
+
+    titlebar.addEventListener('mousedown', e => {
+        win.style.zIndex = ++z;
+
+        dragData = {
+            icon: win,
+            offsetX: e.clientX - win.offsetLeft,
+            offsetY: e.clientY - win.offsetTop
+        };
+        e.preventDefault();
+    });
+});
+
+
     document.addEventListener('mouseup', () => {
         dragData = null;
     });
