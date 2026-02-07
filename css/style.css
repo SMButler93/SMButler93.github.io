@@ -1,0 +1,31 @@
+/* ---------------- Desktop ---------------- */
+*{box-sizing:border-box; user-select:none; font-family:"MS Sans Serif",Tahoma,Arial,sans-serif}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#008080}
+#desktop{position:relative;width:100%;height:100%;padding:16px}
+.icon{width:72px;text-align:center;color:#fff;font-size:12px;cursor:pointer;position:absolute}
+.icon img{width:32px;height:32px;display:block;margin:0 auto 4px}
+
+/* ---------------- Taskbar ---------------- */
+#taskbar{position:absolute;bottom:0;left:0;width:100%;height:32px;background:#c0c0c0;border-top:2px solid #fff;border-left:2px solid #fff;border-right:2px solid #404040;border-bottom:2px solid #404040;display:flex;align-items:center;padding:2px}
+#startBtn{width:60px;height:28px;padding:2px;margin-right:4px;cursor:pointer;display:flex;justify-content:center;align-items:center;background:#c0c0c0;border:2px solid #fff;border-right:2px solid #404040;border-bottom:2px solid #404040}
+#taskbar-windows{display:flex;flex-grow:1;align-items:center;overflow-x:auto}
+#taskbar-windows div{margin-left:2px;padding:2px 4px;background:#c0c0c0;border:2px solid #fff;border-right:2px solid #404040;border-bottom:2px solid #404040;cursor:pointer;font-size:12px}
+#clock{margin-left:auto;margin-right:8px;font-size:12px}
+
+/* ---------------- Start Menu ---------------- */
+#startMenu{position:absolute;bottom:34px;left:2px;width:220px;background:#c0c0c0;border:2px solid #fff;border-right:2px solid #404040;border-bottom:2px solid #404040;display:none}
+.start-header{background:#000080;color:#fff;padding:6px;font-weight:bold}
+.start-item{padding:6px;border-top:1px solid #808080;cursor:pointer}
+.start-item:hover{background:#000080;color:#fff}
+
+/* ---------------- Windows ---------------- */
+.window{position:absolute;width:500px;height:400px;background:#c0c0c0;border:2px solid #fff;border-right:2px solid #404040;border-bottom:2px solid #404040;display:none;box-shadow:2px 2px 4px rgba(0,0,0,0.3)}
+.titlebar{background:linear-gradient(to right,#000080,#0000a0);color:#fff;padding:4px;font-size:12px;display:flex;justify-content:space-between;align-items:center;cursor:move}
+.titlebar .title{text-overflow:ellipsis;overflow:hidden;white-space:nowrap;flex-grow:1}
+.controls span{display:inline-block;width:16px;height:16px;background:#c0c0c0;border:1px solid #404040;color:#000;text-align:center;line-height:14px;font-weight:bold;cursor:pointer;margin-left:2px}
+.window-body{background:#fff;padding:4px;height:calc(100% - 28px - 20px);overflow:auto;font-size:12px;white-space:pre-wrap;outline:none;}
+
+/* Text editor menus */
+.text-menu{display:flex;background:#c0c0c0;border-bottom:2px solid #404040;font-size:12px}
+.text-menu div{padding:2px 6px;cursor:pointer;border-right:1px solid #fff;border-bottom:1px solid #404040}
+.text-menu div:hover{background:#000080;color:#fff}

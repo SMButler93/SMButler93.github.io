@@ -1,134 +1,40 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Scott Butler Dev</title>
-<link rel="stylesheet" href="style.css">
+<title>ScottOS 95</title>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <div id="desktop">
-  <!-- Icons -->
-  <div class="icon" id="icon-about" ondblclick="openWin('aboutWin')">
-    <img src="icons/MyComputer.ico">
-    AboutMe.txt
-  </div>
-  <div class="icon" id="icon-skills" ondblclick="openWin('skillsWin')">
-    <img src="icons/MyComputer.ico">
-    Skills.txt
-  </div>
-  <div class="icon" id="icon-projects" ondblclick="openWin('projectsWin')">
-    <img src="icons/MyComputer.ico">
-    Projects
-  </div>
-  <div class="icon" id="icon-exp" ondblclick="openWin('expWin')">
-    <img src="icons/MyComputer.ico">
-    Experience.txt
-  </div>
-  <div class="icon" id="icon-recycle">
-    <img src="icons/RecycleBin.ico">
-    Recycle Bin
-  </div>
-  <div class="icon" id="icon-mycomp" ondblclick="openWin('myCompWin')">
-    <img src="icons/MyComputer.ico">
-    My Computer
-  </div>
-
-  <!-- Windows -->
-  <div class="window" id="aboutWin" style="top:80px;left:120px">
-    <div class="titlebar">AboutMe.txt<div class="controls"><span onclick="closeWin('aboutWin')">X</span></div></div>
-    <div class="window-body notepad" contenteditable="true">
-      Hi, I'm Scott Butler.
-      Backend-focused .NET Software Engineer.
-      Specialising in:
-      - C# / .NET
-      - EF Core
-      - PostgreSQL
-      - Clean Architecture
-      - API Design
-      This portfolio is a simulated Windows 95 OS environment.
+    <div class="icon" id="icon-mycomp" ondblclick="openTextEditor('My Computer Info.TXT','This is My Computer')">
+        <img src="icons/MyComputer.ico" alt="My Computer">
+        My Computer
     </div>
-  </div>
-
-  <div class="window" id="skillsWin" style="top:120px;left:180px">
-    <div class="titlebar">Skills.txt<div class="controls"><span onclick="closeWin('skillsWin')">X</span></div></div>
-    <div class="window-body notepad" contenteditable="true">
-Languages:
-- C#
-- SQL
-- TypeScript
-Frameworks:
-- .NET
-- EF Core
-- ASP.NET Core
-Concepts:
-- Clean Architecture
-- DDD principles
-- Async/await
-- Dependency Injection
-- Unit Testing
-Tools:
-- Rider
-- GitHub
-- Docker
-- PostgreSQL
+    <div class="icon" id="icon-recycle">
+        <img src="icons/RecycleBin.ico" alt="Recycle Bin">
+        Recycle Bin
     </div>
-  </div>
-
-  <div class="window" id="projectsWin" style="top:140px;left:240px">
-    <div class="titlebar">Projects<div class="controls"><span onclick="closeWin('projectsWin')">X</span></div></div>
-    <div class="window-body">
-<b>Teczter</b><br>Enterprise backend system<br><br>
-<b>PortfolioOS</b><br>Interactive OS-based portfolio<br><br>
-<b>Legacy Migration API</b><br>Third-party integration system
-    </div>
-  </div>
-
-  <div class="window" id="expWin" style="top:160px;left:300px">
-    <div class="titlebar">Experience.txt<div class="controls"><span onclick="closeWin('expWin')">X</span></div></div>
-    <div class="window-body notepad" contenteditable="true">
-Software Engineer (.NET)
-Background:
-- Former teacher
-- Self-taught developer
-- Backend specialist
-Experience:
-- API development
-- System migrations
-- Clean architecture systems
-- Enterprise backend design
-    </div>
-  </div>
-
-  <div class="window" id="myCompWin" style="top:100px;left:200px">
-    <div class="titlebar">My Computer<div class="controls"><span onclick="closeWin('myCompWin')">X</span></div></div>
-    <div class="window-body">
-This is the My Computer window.
-- Drives
-- Network locations
-- Control Panel
-    </div>
-  </div>
 </div>
 
-<!-- Taskbar -->
 <div id="taskbar">
-  <div id="startBtn" onclick="toggleStart()">
-    <img src="icons/StartButton.png">
-  </div>
-  <div id="clock"></div>
+    <div id="startBtn" onclick="toggleStart()">Start</div>
+    <div id="taskbar-windows"></div>
+    <div id="clock"></div>
 </div>
 
-<!-- Start Menu -->
 <div id="startMenu">
-  <div class="start-header">ScottOS 95</div>
-  <div class="start-item" onclick="openFromStart('aboutWin')">AboutMe.txt</div>
-  <div class="start-item" onclick="openFromStart('skillsWin')">Skills.txt</div>
-  <div class="start-item" onclick="openFromStart('projectsWin')">Projects</div>
-  <div class="start-item" onclick="openFromStart('expWin')">Experience.txt</div>
-  <div class="start-item" onclick="openFromStart('myCompWin')">My Computer</div>
+    <div class="start-header">ScottOS 95</div>
+    <div class="start-item" onclick="openTextEditor('README.TXT', document.getElementById('readmeContent').innerText)">README.TXT</div>
 </div>
 
-<script src="script.js"></script>
+<!-- Hidden sample data -->
+<div id="readmeContent" style="display:none;">
+Welcome to ScottOS 95!
+This is a demo of the Win95-style desktop.
+You can open windows, edit text files, drag icons and windows, minimize/maximize, and save changes.
+</div>
+
+<script src="js/script.js"></script>
 </body>
 </html>
