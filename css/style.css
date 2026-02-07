@@ -23,9 +23,17 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
 .titlebar{background:linear-gradient(to right,#000080,#0000a0);color:#fff;padding:4px;font-size:12px;display:flex;justify-content:space-between;align-items:center;cursor:move}
 .titlebar .title{text-overflow:ellipsis;overflow:hidden;white-space:nowrap;flex-grow:1}
 .controls span{display:inline-block;width:16px;height:16px;background:#c0c0c0;border:1px solid #404040;color:#000;text-align:center;line-height:14px;font-weight:bold;cursor:pointer;margin-left:2px}
-.window-body{background:#fff;padding:4px;height:calc(100% - 28px - 20px);overflow:auto;font-size:12px;white-space:pre-wrap;outline:none;}
+.window-body{background:#fff;padding:4px;height:calc(100% - 28px - 20px);overflow:auto;font-size:12px;white-space:pre-wrap;outline:none}
 
 /* Text editor menus */
 .text-menu{display:flex;background:#c0c0c0;border-bottom:2px solid #404040;font-size:12px}
-.text-menu div{padding:2px 6px;cursor:pointer;border-right:1px solid #fff;border-bottom:1px solid #404040}
-.text-menu div:hover{background:#000080;color:#fff}
+.text-menu .menu{position:relative; padding:2px 6px; cursor:pointer; user-select:none}
+.text-menu .menu:hover{background:#000080;color:#fff}
+.dropdown{display:none; position:absolute; top:100%; left:0; background:#c0c0c0; border:2px solid #fff; border-right:2px solid #404040; border-bottom:2px solid #404040; min-width:100px; z-index:1000}
+.dropdown div{padding:4px 6px; cursor:pointer; border-top:1px solid #808080}
+.dropdown div:hover{background:#000080;color:#fff}
+
+/* ---------------- Dialogs ---------------- */
+.dialog .window-body{background:#c0c0c0; color:#000; font-size:12px; white-space:pre-wrap}
+.dialog button{background:#c0c0c0; border:2px solid #fff; border-right:2px solid #404040; border-bottom:2px solid #404040; padding:2px 6px; cursor:pointer; font-size:12px}
+.dialog button:hover{background:#000080;color:#fff}
