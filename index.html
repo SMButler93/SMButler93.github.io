@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ScottOS 95</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="desktop">
+  <div class="icon" id="icon-about" ondblclick="openWin('aboutWin')">
+    <img src="icons/about.png" alt="About">
+    AboutMe.txt
+  </div>
+  <div class="icon" id="icon-skills" ondblclick="openWin('skillsWin')">
+    <img src="icons/skills.png" alt="Skills">
+    Skills.txt
+  </div>
+  <div class="icon" id="icon-projects" ondblclick="openWin('projectsWin')">
+    <img src="icons/projects.png" alt="Projects">
+    Projects
+  </div>
+  <div class="icon" id="icon-exp" ondblclick="openWin('expWin')">
+    <img src="icons/experience.png" alt="Experience">
+    Experience.txt
+  </div>
+  <div class="icon" id="icon-recycle">
+    <img src="icons/recycle.png" alt="Recycle Bin">
+    Recycle Bin
+  </div>
+  <div class="icon" id="icon-mycomp" ondblclick="openWin('myCompWin')">
+    <img src="icons/mycomputer.png" alt="My Computer">
+    My Computer
+  </div>
+</div>
+
+<!-- Example windows -->
+<div class="window" id="aboutWin" style="top:80px;left:120px">
+  <div class="titlebar">AboutMe.txt<div class="controls"><span onclick="closeWin('aboutWin')">X</span></div></div>
+  <div class="window-body notepad">Hi, I'm Scott Butler. Backend-focused .NET Software Engineer.</div>
+</div>
+
+<div id="taskbar">
+  <div id="startBtn" onclick="toggleStart()">
+    <img src="icons/mycomputer.png" alt="Start">
+  </div>
+  <div id="clock"></div>
+</div>
+
+<div id="startMenu">
+  <div class="start-header">ScottOS 95</div>
+  <div class="start-item" onclick="openFromStart('aboutWin')">AboutMe.txt</div>
+  <div class="start-item" onclick="openFromStart('skillsWin')">Skills.txt</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
