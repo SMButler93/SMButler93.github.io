@@ -1,0 +1,63 @@
+---
+interface Props {
+  /** Renders the card as a link when provided. */
+  href?: string;
+  /** Opens the link in a new tab. */
+  external?: boolean;
+  accent?: 'pink' | 'blue' | 'gold';
+  /** Element used when the card is not a link. */
+  as?: 'div' | 'article' | 'li';
+  class?: string;
+}
+
+const { href, external = false, accent = 'pink', as = 'div', class: className } = Astro.props;
+
+const Tag = href ? 'a' : as;
+const linkAttributes = href
+  ? { href, ...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {}) }
+  : {};
+---
+
+<Tag
+  class:list={['glass-card', { 'glass-card--interactive': href }, className]}
+  data-accent={accent}
+  {...linkAttributes}
+>
+  <slot />
+</Tag>
+
+<style>
+  .glass-card {
+    --card-accent: var(--color-pink);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 22px;
+    border-radius: var(--radius-lg);
+    background: var(--glass-fill);
+    border: 1px solid var(--glass-border);
+    color: var(--color-text);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+  }
+
+  .glass-card[data-accent='blue'] {
+    --card-accent: var(--color-blue);
+  }
+
+  .glass-card[data-accent='gold'] {
+    --card-accent: var(--color-gold);
+  }
+
+  .glass-card--interactive {
+    transition:
+      transform 0.25s var(--ease-out),
+      border-color 0.25s;
+  }
+
+  .glass-card--interactive:hover {
+    color: var(--color-text);
+    transform: translateY(-3px);
+    border-color: color-mix(in oklch, var(--card-accent) 55%, transparent);
+  }
+</style>

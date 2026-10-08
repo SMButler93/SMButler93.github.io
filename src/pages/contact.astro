@@ -1,0 +1,134 @@
+---
+import GlassCard from '@/components/GlassCard.astro';
+import PageHeading from '@/components/PageHeading.astro';
+import { profile, socialLinks } from '@/data/profile';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const mailto = `mailto:${profile.email}`;
+---
+
+<BaseLayout title="Contact" description={`Get in touch with ${profile.name}.`}>
+  <div class="contact">
+    <PageHeading eyebrow="Contact" title="Let's build something together.">
+      <p class="lead">The quickest way to reach me is by email. I'm also on LinkedIn and GitHub.</p>
+    </PageHeading>
+
+    <section class="email" aria-labelledby="email-label">
+      <h2 id="email-label" class="email__label mono">Email</h2>
+      <a class="email__address" href={mailto}>{profile.email}</a>
+      <div class="email__actions">
+        <a class="button button--primary" href={mailto}>Send an email</a>
+        <button type="button" class="button button--ghost" data-copy={profile.email} hidden>
+          Copy address
+        </button>
+        <span class="visually-hidden" role="status" data-copy-status></span>
+      </div>
+    </section>
+
+    <ul class="socials" role="list">
+      {
+        socialLinks.map((link, index) => (
+          <li>
+            <GlassCard
+              href={link.url}
+              external
+              accent={index % 2 === 0 ? 'blue' : 'pink'}
+              class="social"
+            >
+              <span class="social__text">
+                <span class="card-title">{link.label}</span>
+                <span class="social__handle mono">{link.handle}</span>
+              </span>
+              <span class="social__arrow" aria-hidden="true">
+                ↗
+              </span>
+              <span class="visually-hidden">(opens in a new tab)</span>
+            </GlassCard>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</BaseLayout>
+
+<script>
+  import { initCopyButtons } from '@/scripts/copy-buttons';
+
+  initCopyButtons();
+</script>
+
+<style>
+  .contact {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    max-width: 880px;
+    padding-top: 16px;
+  }
+
+  .email {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: clamp(20px, 4vw, 32px);
+    border-radius: var(--radius-xl);
+    background: oklch(0.2 0.03 285 / 0.5);
+    border: 1px solid oklch(1 0 0 / 0.12);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+    backdrop-filter: blur(22px) saturate(150%);
+  }
+
+  .email__label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text-subtle);
+  }
+
+  .email__address {
+    font: 700 clamp(1.375rem, 4.6vw, 2.5rem) / 1.15 var(--font-display);
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    overflow-wrap: anywhere;
+  }
+
+  .email__address:hover {
+    color: var(--color-pink);
+  }
+
+  .email__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .socials {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: 16px;
+    padding: 0;
+    list-style: none;
+  }
+
+  :global(.social) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .social__text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .social__handle {
+    font-size: 0.875rem;
+    color: var(--color-text-subtle);
+  }
+
+  .social__arrow {
+    font: 500 1.25rem/1 var(--font-mono);
+    color: var(--color-text-subtle);
+  }
+</style>

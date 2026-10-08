@@ -1,0 +1,37 @@
+<div class="backdrop" aria-hidden="true">
+  <div class="orb orb--pink"></div>
+  <div class="orb orb--blue"></div>
+</div>
+
+<style>
+  .backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .orb {
+    position: absolute;
+    width: 60vw;
+    height: 60vw;
+    border-radius: 50%;
+    filter: blur(40px);
+  }
+
+  .orb--pink {
+    top: -18vh;
+    right: -12vw;
+    max-width: 720px;
+    max-height: 720px;
+    background: radial-gradient(circle, oklch(0.55 0.2 330 / 0.42), transparent 65%);
+  }
+
+  .orb--blue {
+    top: 30vh;
+    left: -20vw;
+    max-width: 680px;
+    max-height: 680px;
+    background: radial-gradient(circle, oklch(0.5 0.18 255 / 0.38), transparent 65%);
+  }
+</style>

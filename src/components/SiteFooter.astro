@@ -1,0 +1,57 @@
+---
+import { profile, socialLinks } from '@/data/profile';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="container site-footer">
+  <p class="copyright">© {year} {profile.name}</p>
+  <ul class="links" aria-label="Social links">
+    {
+      socialLinks.map((link) => (
+        <li>
+          <a href={link.url} target="_blank" rel="noopener noreferrer">
+            {link.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 24px 32px;
+    border-top: 1px solid oklch(1 0 0 / 0.08);
+  }
+
+  .copyright {
+    font-size: 0.875rem;
+    color: var(--color-text-subtle);
+  }
+
+  .links {
+    display: flex;
+    gap: 8px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .links a {
+    display: inline-block;
+    padding: 12px;
+    font: 500 0.875rem/1 var(--font-sans);
+    color: var(--color-text-muted);
+  }
+
+  .links a:hover {
+    color: var(--color-text);
+  }
+</style>

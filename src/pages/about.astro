@@ -1,0 +1,109 @@
+---
+import Chip from '@/components/Chip.astro';
+import GlassCard from '@/components/GlassCard.astro';
+import Portrait from '@/components/Portrait.astro';
+import { values } from '@/data/about';
+import { profile } from '@/data/profile';
+import { practices } from '@/data/skills';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const pad = (index: number): string => String(index + 1).padStart(2, '0');
+---
+
+<BaseLayout title="About" description={`About ${profile.name}: ${profile.summary}`}>
+  <section class="intro" aria-labelledby="about-title">
+    <Portrait size="lg" priority />
+    <div class="intro__text">
+      <p class="eyebrow">About</p>
+      <h1 id="about-title" class="display-2">Full-stack engineer, backend at heart.</h1>
+      <p class="lead">{profile.summary}</p>
+      <div class="practices">
+        <h2 class="practices__label mono">How I work</h2>
+        <ul class="chips" role="list">
+          {
+            practices.items.map((practice) => (
+              <li>
+                <Chip shape="pill" size="sm">
+                  {practice}
+                </Chip>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="values" aria-labelledby="values-title">
+    <h2 id="values-title" class="heading-3">What I care about</h2>
+    <ul class="values__grid" role="list">
+      {
+        values.map((value, index) => (
+          <GlassCard as="li">
+            <span class="values__index mono" aria-hidden="true">
+              {pad(index)}
+            </span>
+            <h3 class="card-title">{value.title}</h3>
+            <p class="card-text">{value.description}</p>
+          </GlassCard>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .intro {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    align-items: center;
+    gap: 40px 56px;
+    padding-top: 16px;
+  }
+
+  .intro__text {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .practices {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .practices__label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text-subtle);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .values {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 48px;
+  }
+
+  .values__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 16px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .values__index {
+    font-size: 0.8125rem;
+    color: var(--color-pink);
+  }
+</style>

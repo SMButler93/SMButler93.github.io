@@ -1,0 +1,64 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = Omit<HTMLAttributes<'div'>, 'title'> & {
+  /** Plain-text title. Use the `title` slot instead when the title needs custom markup. */
+  title?: string;
+  dot?: 'pink' | 'blue';
+};
+
+const { title, dot = 'pink', class: className, ...attrs } = Astro.props;
+---
+
+<div class:list={['window', className]} {...attrs}>
+  <div class="window__bar">
+    <div class="window__title">
+      <span class="window__dot" data-tone={dot} aria-hidden="true"></span>
+      <slot name="title"><span>{title}</span></slot>
+    </div>
+    <slot name="actions" />
+  </div>
+  <slot />
+</div>
+
+<style>
+  .window {
+    min-width: 0;
+    overflow: hidden;
+    border-radius: 22px;
+    background: var(--color-surface);
+    border: 1px solid oklch(1 0 0 / 0.12);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+    backdrop-filter: blur(22px) saturate(150%);
+    box-shadow: var(--shadow-panel);
+  }
+
+  .window__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 54px;
+    padding: 8px 14px 8px 16px;
+    border-bottom: 1px solid oklch(1 0 0 / 0.08);
+  }
+
+  .window__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font: 500 0.8125rem/1 var(--font-mono);
+    color: oklch(0.88 0.02 285);
+  }
+
+  .window__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-pink);
+  }
+
+  .window__dot[data-tone='blue'] {
+    background: var(--color-blue);
+  }
+</style>
