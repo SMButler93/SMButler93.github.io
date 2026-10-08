@@ -1,0 +1,198 @@
+---
+import CodeBlock from '@/components/CodeBlock.astro';
+import WindowFrame from '@/components/WindowFrame.astro';
+import { heroSnippet } from '@/data/code-samples';
+import { PROMPT } from '@/scripts/terminal/commands';
+---
+
+<WindowFrame class="console" data-console>
+  <span slot="title" data-console-title>Scott.cs</span>
+  <button
+    slot="actions"
+    type="button"
+    class="console__toggle"
+    aria-controls="console-terminal"
+    aria-expanded="false"
+    aria-label="dotnet run: open an interactive terminal"
+    data-console-toggle
+    hidden
+  >
+    ▶ dotnet run
+  </button>
+
+  <div class="console__code" data-console-code>
+    <CodeBlock code={heroSnippet} label="C# snippet describing Scott" data-typewriter="pending" />
+  </div>
+
+  <div class="terminal" id="console-terminal" data-terminal hidden>
+    <div class="terminal__log" role="log" aria-live="polite" data-terminal-log></div>
+    <form class="terminal__prompt" data-terminal-form hidden>
+      <label class="terminal__ps1" for="terminal-input">{PROMPT}</label>
+      <input
+        id="terminal-input"
+        class="terminal__input"
+        type="text"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        enterkeyhint="go"
+        data-terminal-input
+      />
+    </form>
+    <div
+      class="terminal__suggestions"
+      role="group"
+      aria-label="Suggested commands"
+      data-terminal-suggestions
+    >
+    </div>
+  </div>
+</WindowFrame>
+
+<script>
+  import { initConsole } from '@/scripts/console';
+
+  const root = document.querySelector<HTMLElement>('[data-console]');
+  if (root) initConsole(root);
+</script>
+
+<style>
+  .console__code {
+    min-height: 270px;
+  }
+
+  /* Blinking caret after the last typed character. */
+  .console__code :global(code)::after {
+    content: '';
+    display: inline-block;
+    width: 0.6em;
+    height: 1.15em;
+    margin-left: 1px;
+    vertical-align: text-bottom;
+    background: var(--color-pink);
+    animation: caret-blink 1s step-end infinite;
+  }
+
+  @keyframes caret-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .console__toggle {
+    min-height: 36px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid oklch(1 0 0 / 0.12);
+    background: oklch(1 0 0 / 0.06);
+    color: oklch(0.86 0.02 285);
+    font: 500 0.75rem/1 var(--font-mono);
+    cursor: pointer;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+
+  .console__toggle:hover {
+    background: oklch(1 0 0 / 0.12);
+    color: var(--color-text);
+  }
+
+  .terminal {
+    display: flex;
+    flex-direction: column;
+    height: 340px;
+    font: 400 0.875rem/1.65 var(--font-mono);
+  }
+
+  .terminal__log {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 16px 18px 4px;
+    cursor: text;
+  }
+
+  .terminal__log :global(.terminal-line) {
+    min-height: 1.65em;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    color: var(--color-text-muted);
+  }
+
+  .terminal__log :global(.terminal-line[data-tone='command']) {
+    color: var(--color-text);
+  }
+  .terminal__log :global(.terminal-line[data-tone='muted']) {
+    color: oklch(0.68 0.02 285);
+  }
+  .terminal__log :global(.terminal-line[data-tone='accent']) {
+    color: var(--color-pink);
+  }
+  .terminal__log :global(.terminal-line[data-tone='info']) {
+    color: var(--color-blue);
+  }
+  .terminal__log :global(.terminal-line[data-tone='success']) {
+    color: var(--color-success);
+  }
+  .terminal__log :global(.terminal-line[data-tone='error']) {
+    color: var(--color-danger);
+  }
+
+  .terminal__prompt {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 18px 10px;
+  }
+
+  .terminal__ps1 {
+    flex: none;
+    color: var(--color-pink);
+  }
+
+  .terminal__input {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--color-text);
+    caret-color: var(--color-pink);
+    font: inherit;
+  }
+
+  .terminal__suggestions {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 10px 14px;
+    border-top: 1px solid oklch(1 0 0 / 0.08);
+  }
+
+  .terminal__suggestions:empty {
+    display: none;
+  }
+
+  .terminal__suggestions :global(.terminal-suggestion) {
+    flex: none;
+    min-height: 36px;
+    padding: 0 12px;
+    border-radius: 9px;
+    border: 1px solid oklch(1 0 0 / 0.12);
+    background: oklch(1 0 0 / 0.06);
+    color: oklch(0.9 0.02 285);
+    font: 500 0.78125rem/1 var(--font-mono);
+    cursor: pointer;
+    transition:
+      background-color 0.2s,
+      border-color 0.2s;
+  }
+
+  .terminal__suggestions :global(.terminal-suggestion:hover) {
+    background: oklch(0.8 0.14 330 / 0.18);
+    border-color: oklch(0.8 0.14 330 / 0.5);
+  }
+</style>

@@ -1,0 +1,95 @@
+---
+import { isCurrentPath, navigation } from '@/data/navigation';
+
+const { pathname } = Astro.url;
+---
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <ul class="nav__list">
+      {
+        navigation.map((item) => (
+          <li>
+            <a
+              class="nav__link"
+              href={item.href}
+              aria-current={isCurrentPath(item.href, pathname) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: fixed;
+    top: 12px;
+    inset-inline: 0;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    padding-inline: 12px;
+    pointer-events: none;
+  }
+
+  .nav {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    pointer-events: auto;
+    padding: 5px;
+    border-radius: var(--radius-pill);
+    background: oklch(0.22 0.03 285 / 0.55);
+    border: 1px solid var(--glass-border);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    box-shadow:
+      0 10px 30px -12px oklch(0 0 0 / 0.6),
+      inset 0 1px 0 oklch(1 0 0 / 0.08);
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav__list {
+    display: flex;
+    gap: 2px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nav__link {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: var(--radius-pill);
+    font: 500 0.875rem/1 var(--font-sans);
+    white-space: nowrap;
+    color: var(--color-text-subtle);
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+
+  /* Fit all five links on common phone widths (375px+) without a hidden scroll. */
+  @media (max-width: 420px) {
+    .nav__link {
+      padding: 0 9px;
+    }
+  }
+
+  .nav__link:hover {
+    color: var(--color-text);
+  }
+
+  .nav__link[aria-current='page'] {
+    background: oklch(1 0 0 / 0.14);
+    color: var(--color-text);
+  }
+</style>

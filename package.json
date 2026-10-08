@@ -1,0 +1,35 @@
+{
+  "name": "scott-butler-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal portfolio of Scott Butler, Full-Stack .NET Engineer.",
+  "type": "module",
+  "engines": {
+    "node": ">=20.3.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "verify": "npm run check && npm test && npm run build"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.6.0",
+    "@fontsource-variable/bricolage-grotesque": "^5.2.0",
+    "@fontsource-variable/geist": "^5.2.0",
+    "@fontsource-variable/geist-mono": "^5.2.0",
+    "astro": "^5.14.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "prettier": "^3.6.0",
+    "prettier-plugin-astro": "^0.14.1",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.0"
+  }
+}

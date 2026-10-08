@@ -1,0 +1,168 @@
+---
+import Chip from '@/components/Chip.astro';
+import CodeBlock from '@/components/CodeBlock.astro';
+import GlassCard from '@/components/GlassCard.astro';
+import PageHeading from '@/components/PageHeading.astro';
+import WindowFrame from '@/components/WindowFrame.astro';
+import { skillsSnippet } from '@/data/code-samples';
+import { skillGroups } from '@/data/skills';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const pad = (count: number): string => String(count).padStart(2, '0');
+---
+
+<BaseLayout title="Skills" description="Languages, frameworks, tools and practices I work with.">
+  <div class="skills" data-tabs>
+    <div class="skills__header">
+      <PageHeading eyebrow="Skills & stack" title="The toolbox." />
+      <div class="tablist" role="tablist" aria-label="Skills view" hidden>
+        <button
+          type="button"
+          role="tab"
+          id="tab-cards"
+          aria-controls="panel-cards"
+          aria-selected="true">Cards</button
+        >
+        <button
+          type="button"
+          role="tab"
+          id="tab-code"
+          class="mono"
+          aria-controls="panel-code"
+          aria-selected="false"
+          tabindex="-1">Program.cs</button
+        >
+      </div>
+    </div>
+
+    <div id="panel-cards" role="tabpanel" aria-labelledby="tab-cards" tabindex="0">
+      <ul class="groups" role="list">
+        {
+          skillGroups.map((group) => (
+            <GlassCard as="li" class="group">
+              <div class="group__header">
+                <h2 class="card-title">{group.title}</h2>
+                <span class="group__count mono">
+                  <span aria-hidden="true">{pad(group.items.length)}</span>
+                  <span class="visually-hidden">{group.items.length} skills</span>
+                </span>
+              </div>
+              <ul class="group__items" role="list">
+                {group.items.map((item) => (
+                  <li>
+                    <Chip interactive>{item}</Chip>
+                  </li>
+                ))}
+              </ul>
+            </GlassCard>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div id="panel-code" role="tabpanel" aria-labelledby="tab-code" tabindex="0">
+      <WindowFrame title="Program.cs" dot="blue">
+        <CodeBlock code={skillsSnippet} label="Skills expressed as C# service registrations" />
+      </WindowFrame>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import { initTabs } from '@/scripts/tabs';
+
+  const root = document.querySelector<HTMLElement>('[data-tabs]');
+  if (root) initTabs(root);
+</script>
+
+<style>
+  .skills {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-top: 16px;
+  }
+
+  .skills__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .tablist {
+    display: flex;
+    gap: 2px;
+    padding: 4px;
+    border-radius: 12px;
+    background: oklch(1 0 0 / 0.06);
+    border: 1px solid oklch(1 0 0 / 0.12);
+  }
+
+  [role='tab'] {
+    min-height: 40px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--color-text-subtle);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+
+  [role='tab']:hover,
+  [role='tab'][aria-selected='true'] {
+    color: var(--color-text);
+  }
+
+  [role='tab'][aria-selected='true'] {
+    background: oklch(1 0 0 / 0.14);
+  }
+
+  [role='tabpanel']:focus-visible {
+    outline-offset: 6px;
+    border-radius: var(--radius-lg);
+  }
+
+  /* Without JavaScript both panels are shown, so separate them. */
+  #panel-code {
+    margin-top: 12px;
+  }
+
+  .groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 16px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .groups :global(.group) {
+    gap: 16px;
+  }
+
+  .group__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .group__count {
+    font-size: 0.8125rem;
+    color: var(--color-text-subtle);
+  }
+
+  .group__items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0;
+    list-style: none;
+  }
+</style>

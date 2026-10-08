@@ -1,0 +1,11 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = HTMLAttributes<'a'> & {
+  variant?: 'primary' | 'ghost';
+};
+
+const { variant = 'primary', class: className, ...attrs } = Astro.props;
+---
+
+<a class:list={['button', `button--${variant}`, className]} {...attrs}><slot /></a>

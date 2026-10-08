@@ -1,0 +1,52 @@
+---
+interface Props {
+  size?: 'sm' | 'md';
+  shape?: 'rounded' | 'pill';
+  interactive?: boolean;
+}
+
+const { size = 'md', shape = 'rounded', interactive = false } = Astro.props;
+---
+
+<span class:list={['chip', `chip--${size}`, `chip--${shape}`, { 'chip--interactive': interactive }]}
+  ><slot /></span
+>
+
+<style>
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    font: 500 0.875rem/1 var(--font-mono);
+    background: var(--glass-fill-raised);
+    border: 1px solid oklch(1 0 0 / 0.1);
+    color: var(--color-text);
+  }
+
+  .chip--sm {
+    padding: 7px 10px;
+    font-size: 0.8125rem;
+    border-radius: 8px;
+  }
+
+  .chip--md {
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+  }
+
+  .chip--pill {
+    border-radius: var(--radius-pill);
+  }
+
+  .chip--interactive {
+    transition:
+      background-color 0.2s,
+      border-color 0.2s,
+      transform 0.2s var(--ease-out);
+  }
+
+  .chip--interactive:hover {
+    background: oklch(0.8 0.14 330 / 0.18);
+    border-color: oklch(0.8 0.14 330 / 0.55);
+    transform: translateY(-2px);
+  }
+</style>

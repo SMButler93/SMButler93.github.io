@@ -1,0 +1,60 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { tokenizeCSharp } from '@/lib/csharp';
+
+type Props = Omit<HTMLAttributes<'pre'>, 'children'> & {
+  code: string;
+  /** Accessible name for the scrollable region. */
+  label: string;
+};
+
+const { code, label, class: className, ...attrs } = Astro.props;
+const tokens = tokenizeCSharp(code);
+---
+
+<pre
+  class:list={['code', className]}
+  tabindex="0"
+  role="region"
+  aria-label={label}
+  {...attrs}><code>{tokens.map((token) => token.kind === 'plain' ? token.text : <span class={`tok tok--${token.kind}`}>{token.text}</span>)}</code></pre>
+
+<style>
+  .code {
+    margin: 0;
+    padding: 20px 18px 24px;
+    overflow-x: auto;
+    font: 400 clamp(0.75rem, 1.5vw, 0.875rem) / 1.75 var(--font-mono);
+    color: var(--color-text-subtle);
+    tab-size: 4;
+  }
+
+  .code:focus-visible {
+    outline-offset: -4px;
+  }
+
+  .tok--keyword {
+    color: var(--color-blue);
+  }
+
+  .tok--type {
+    color: var(--color-gold);
+  }
+
+  .tok--string {
+    color: var(--color-pink);
+  }
+
+  .tok--comment {
+    color: oklch(0.66 0.03 285);
+    font-style: italic;
+  }
+
+  .tok--method {
+    color: oklch(0.84 0.1 190);
+  }
+
+  .tok--property {
+    color: oklch(0.9 0.03 285);
+  }
+</style>

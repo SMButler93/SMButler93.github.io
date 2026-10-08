@@ -1,0 +1,98 @@
+---
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
+import '@fontsource-variable/bricolage-grotesque';
+import '@/styles/global.css';
+
+import Backdrop from '@/components/Backdrop.astro';
+import SiteFooter from '@/components/SiteFooter.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import { profile } from '@/data/profile';
+
+interface Props {
+  /** Page-specific title; the site name is appended automatically. */
+  title?: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = `${profile.name}, ${profile.role}. Building scalable, performant and resilient backend APIs in modern .NET.`,
+} = Astro.props;
+
+const pageTitle = title ? `${title} · ${profile.name}` : `${profile.name} · ${profile.role}`;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+const socialImage = {
+  url: new URL('/og-image.png', Astro.site),
+  width: 1200,
+  height: 630,
+  alt: `${profile.name}, ${profile.role}`,
+} as const;
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={profile.name} />
+    <meta name="theme-color" content="#16122a" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={profile.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImage.url} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content={String(socialImage.width)} />
+    <meta property="og:image:height" content={String(socialImage.height)} />
+    <meta property="og:image:alt" content={socialImage.alt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={socialImage.url} />
+    <meta name="twitter:image:alt" content={socialImage.alt} />
+
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Backdrop />
+    <SiteHeader />
+    <main id="main" class="container site-main">
+      <slot />
+    </main>
+    <SiteFooter />
+
+    <script>
+      import { refreshDurations } from '@/scripts/durations';
+      refreshDurations();
+    </script>
+  </body>
+</html>
+
+<style>
+  .site-main {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    padding-top: var(--header-offset);
+    padding-bottom: 48px;
+    animation: page-in 0.5s var(--ease-out) both;
+  }
+
+  @keyframes page-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+</style>
