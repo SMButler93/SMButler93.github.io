@@ -6,9 +6,9 @@ const LABELS = {
   code: {
     title: 'Scott.cs',
     button: '▶ dotnet run',
-    aria: 'Run the code and open an interactive terminal',
+    aria: 'dotnet run: open an interactive terminal',
   },
-  terminal: { title: 'bash — scott@portfolio', button: '■ exit', aria: 'Exit the terminal' },
+  terminal: { title: 'bash — scott@portfolio', button: '■ exit', aria: 'exit terminal' },
 } as const;
 
 /** Wires up the home page console: typed C# snippet plus an opt-in terminal. */

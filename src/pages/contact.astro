@@ -109,7 +109,8 @@ const mailto = `mailto:${profile.email}`;
     list-style: none;
   }
 
-  :global(.social) {
+  /* Scoped under .socials so it outranks GlassCard's own scoped flex-direction. */
+  .socials :global(.social) {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;

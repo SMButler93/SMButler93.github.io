@@ -13,7 +13,7 @@ import { PROMPT } from '@/scripts/terminal/commands';
     class="console__toggle"
     aria-controls="console-terminal"
     aria-expanded="false"
-    aria-label="Run the code and open an interactive terminal"
+    aria-label="dotnet run: open an interactive terminal"
     data-console-toggle
     hidden
   >
@@ -39,7 +39,12 @@ import { PROMPT } from '@/scripts/terminal/commands';
         data-terminal-input
       />
     </form>
-    <div class="terminal__suggestions" aria-label="Suggested commands" data-terminal-suggestions>
+    <div
+      class="terminal__suggestions"
+      role="group"
+      aria-label="Suggested commands"
+      data-terminal-suggestions
+    >
     </div>
   </div>
 </WindowFrame>

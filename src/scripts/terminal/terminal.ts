@@ -78,7 +78,8 @@ export class Terminal {
     const result = runCommand(input);
     this.#print(result.lines);
     if (result.effect) this.#apply(result.effect);
-    this.#renderSuggestions();
+    // Exiting resets the terminal; don't repopulate it afterwards.
+    if (result.effect?.type !== 'exit') this.#renderSuggestions();
   }
 
   #apply(effect: CommandEffect): void {

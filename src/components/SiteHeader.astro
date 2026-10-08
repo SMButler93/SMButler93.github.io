@@ -77,6 +77,13 @@ const { pathname } = Astro.url;
       color 0.2s;
   }
 
+  /* Fit all five links on common phone widths (375px+) without a hidden scroll. */
+  @media (max-width: 420px) {
+    .nav__link {
+      padding: 0 9px;
+    }
+  }
+
   .nav__link:hover {
     color: var(--color-text);
   }

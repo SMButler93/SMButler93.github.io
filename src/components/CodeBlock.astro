@@ -15,6 +15,7 @@ const tokens = tokenizeCSharp(code);
 <pre
   class:list={['code', className]}
   tabindex="0"
+  role="region"
   aria-label={label}
   {...attrs}><code>{tokens.map((token) => token.kind === 'plain' ? token.text : <span class={`tok tok--${token.kind}`}>{token.text}</span>)}</code></pre>
 

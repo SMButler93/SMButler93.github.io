@@ -180,8 +180,8 @@ import { formatTenure, formatYearMonth } from '@/lib/dates';
     color: var(--color-blue);
   }
 
-  /* Applied to the GlassCard root, which lives outside this page's style scope. */
-  :global(.press) {
+  /* Applied to the GlassCard root; scoped under .experience to outrank GlassCard's own styles. */
+  .experience :global(.press) {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;

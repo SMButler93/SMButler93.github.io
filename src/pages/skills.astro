@@ -42,8 +42,9 @@ const pad = (count: number): string => String(count).padStart(2, '0');
             <GlassCard as="li" class="group">
               <div class="group__header">
                 <h2 class="card-title">{group.title}</h2>
-                <span class="group__count mono" aria-label={`${group.items.length} skills`}>
-                  {pad(group.items.length)}
+                <span class="group__count mono">
+                  <span aria-hidden="true">{pad(group.items.length)}</span>
+                  <span class="visually-hidden">{group.items.length} skills</span>
                 </span>
               </div>
               <ul class="group__items" role="list">
@@ -141,7 +142,7 @@ const pad = (count: number): string => String(count).padStart(2, '0');
     list-style: none;
   }
 
-  :global(.group) {
+  .groups :global(.group) {
     gap: 16px;
   }
 

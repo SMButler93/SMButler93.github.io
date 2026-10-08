@@ -19,6 +19,7 @@ export function initCopyButtons(root: ParentNode = document): void {
         if (status) status.textContent = 'Email address copied to clipboard';
       } catch {
         button.textContent = 'Copy failed';
+        if (status) status.textContent = 'Could not copy the email address';
       }
       window.clearTimeout(timer);
       timer = window.setTimeout(() => {
